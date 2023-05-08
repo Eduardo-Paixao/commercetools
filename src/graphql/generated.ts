@@ -15241,17 +15241,24 @@ export type SetKey = {
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductQueryResult', results: Array<{ __typename?: 'Product', id: string, masterData: { __typename?: 'ProductCatalogData', current?: { __typename?: 'ProductData', name?: string | null } | null } }> } };
+export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductQueryResult', total: any, results: Array<{ __typename?: 'Product', id: string, masterData: { __typename?: 'ProductCatalogData', current?: { __typename?: 'ProductData', name?: string | null, slug?: string | null, masterVariant: { __typename?: 'ProductVariant', images: Array<{ __typename?: 'Image', url: string }> } } | null } }> } };
 
 
 export const GetProductsDocument = gql`
     query getProducts {
   products {
+    total
     results {
       id
       masterData {
         current {
           name(locale: "en")
+          slug(locale: "en")
+          masterVariant {
+            images {
+              url
+            }
+          }
         }
       }
     }

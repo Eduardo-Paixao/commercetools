@@ -2,15 +2,18 @@
 
 # export const GET_Products = gql`
   query getProducts {
-    products {
-      results {
-        id
-        masterData {
-          current {
-            name(locale: "en")
-          }
+    products{
+    total
+    results{
+      id
+      masterData{
+        current{ 
+          name(locale:"en")
+          slug(locale:"en")
+          masterVariant{images{url}}
         }
       }
     }
+  }
   }
 # `;
