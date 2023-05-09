@@ -1,7 +1,8 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 const authEndpoint = "https://auth.us-central1.gcp.commercetools.com/oauth/token";
 
-let token = "F143DLgxjpMWzoKefRdRzhfs4nYQ9R0f";
+export let token = "F143DLgxjpMWzoKefRdRzhfs4nYQ9R0f";
+
 export async function getToken() {
   const response = await fetch(authEndpoint, {
     method: "POST",
@@ -18,7 +19,6 @@ export async function getToken() {
   token = data.access_token;
   return token;
 }
-
 getToken();
 export const createApolloClient = new ApolloClient({
   uri: "https://api.us-central1.gcp.commercetools.com/teste-dev/graphql",

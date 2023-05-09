@@ -1,19 +1,32 @@
 # import { gql } from "@apollo/client";
 
 # export const GET_Products = gql`
-  query getProducts {
-    products{
+query getProducts {
+  products {
     total
-    results{
+    results {
       id
-      masterData{
-        current{ 
-          name(locale:"en")
-          slug(locale:"en")
-          masterVariant{images{url}}
+      masterData {
+        current {
+          name(locale: "en")
+          slug(locale: "en")
+          masterVariant {
+            price(country: "US", currency: "USD") {
+              country
+
+              value {
+                currencyCode
+                centAmount
+                fractionDigits
+              }
+            }
+            images {
+              url
+            }
+          }
         }
       }
     }
   }
-  }
+}
 # `;

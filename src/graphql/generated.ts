@@ -4572,6 +4572,7 @@ export type InStoreProductArgs = {
   id?: InputMaybe<Scalars['String']>;
   key?: InputMaybe<Scalars['String']>;
   localeProjection?: InputMaybe<Array<Scalars['Locale']>>;
+  projectExpandedProducts?: InputMaybe<Scalars['Boolean']>;
   sku?: InputMaybe<Scalars['String']>;
   variantKey?: InputMaybe<Scalars['String']>;
 };
@@ -9630,6 +9631,7 @@ export type QueryProductArgs = {
   id?: InputMaybe<Scalars['String']>;
   key?: InputMaybe<Scalars['String']>;
   localeProjection?: InputMaybe<Array<Scalars['Locale']>>;
+  projectExpandedProducts?: InputMaybe<Scalars['Boolean']>;
   sku?: InputMaybe<Scalars['String']>;
   variantKey?: InputMaybe<Scalars['String']>;
 };
@@ -15241,7 +15243,7 @@ export type SetKey = {
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductQueryResult', total: any, results: Array<{ __typename?: 'Product', id: string, masterData: { __typename?: 'ProductCatalogData', current?: { __typename?: 'ProductData', name?: string | null, slug?: string | null, masterVariant: { __typename?: 'ProductVariant', images: Array<{ __typename?: 'Image', url: string }> } } | null } }> } };
+export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductQueryResult', total: any, results: Array<{ __typename?: 'Product', id: string, masterData: { __typename?: 'ProductCatalogData', current?: { __typename?: 'ProductData', name?: string | null, slug?: string | null, masterVariant: { __typename?: 'ProductVariant', price?: { __typename?: 'ProductPrice', country?: any | null, value: { __typename?: 'HighPrecisionMoney', currencyCode: any, centAmount: any, fractionDigits: number } | { __typename?: 'Money', currencyCode: any, centAmount: any, fractionDigits: number } } | null, images: Array<{ __typename?: 'Image', url: string }> } } | null } }> } };
 
 
 export const GetProductsDocument = gql`
@@ -15255,6 +15257,14 @@ export const GetProductsDocument = gql`
           name(locale: "en")
           slug(locale: "en")
           masterVariant {
+            price(country: "US", currency: "USD") {
+              country
+              value {
+                currencyCode
+                centAmount
+                fractionDigits
+              }
+            }
             images {
               url
             }

@@ -2,6 +2,13 @@ import { useGetProductsQuery } from "@/graphql/generated";
 export default function Home() {
   const { data } = useGetProductsQuery();
 
+  const formatCurrency = (value: number) => {
+    return Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(value! / 100);
+  };
+
   return (
     <div className="bg-slate-100">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -26,12 +33,11 @@ export default function Home() {
                       {product.masterData.current?.name}
                     </a>
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {"product.color"}
-                  </p>
                 </div>
                 <p className="text-sm font-medium text-gray-900">
-                  {"product.price"}
+                  {formatCurrency(
+                    product.masterData.current?.masterVariant.price?.value.centAmount
+                  )}
                 </p>
               </div>
             </div>
