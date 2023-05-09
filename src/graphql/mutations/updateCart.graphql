@@ -1,0 +1,11 @@
+mutation updateCart($id:String!, $sku:String!) {
+  updateCart(
+    version: 1
+    actions: { addLineItem: { sku: $sku } }
+    id: $id
+  ) {
+    lineItems {
+      quantity
+    }
+  }
+}

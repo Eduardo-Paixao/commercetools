@@ -1,0 +1,17 @@
+mutation createCart($email:String!, $sku:String!) {
+  createCart(
+    draft: {
+      currency: "USD"
+      country: "US"
+      customerEmail: $email
+      lineItems: { sku: $sku }
+    }
+  ) {
+    id
+    version
+    customerEmail
+    lineItems {
+      quantity
+    }
+  }
+}

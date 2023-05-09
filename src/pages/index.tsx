@@ -1,13 +1,7 @@
 import { useGetProductsQuery } from "@/graphql/generated";
+import { formatCurrency } from "@/util/formatCurrency";
 export default function Home() {
   const { data } = useGetProductsQuery();
-
-  const formatCurrency = (value: number) => {
-    return Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(value! / 100);
-  };
 
   return (
     <div className="bg-slate-100">
