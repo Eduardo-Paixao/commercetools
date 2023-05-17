@@ -261,6 +261,7 @@ export type AddMyPaymentTransaction = {
 export type AddOrderDelivery = {
   address?: InputMaybe<AddressInput>;
   custom?: InputMaybe<CustomFieldsDraft>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   items?: InputMaybe<Array<DeliveryItemDraftType>>;
   parcels?: InputMaybe<Array<ParcelDataDraftType>>;
   shippingKey?: InputMaybe<Scalars['String']>;
@@ -276,7 +277,8 @@ export type AddOrderItemShippingAddress = {
 
 export type AddOrderParcelToDelivery = {
   custom?: InputMaybe<CustomFieldsDraft>;
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   items?: InputMaybe<Array<DeliveryItemDraftType>>;
   measurements?: InputMaybe<ParcelMeasurementsDraftType>;
   trackingData?: InputMaybe<TrackingDataDraftType>;
@@ -393,6 +395,7 @@ export type AddStagedOrderCustomLineItemOutput = StagedOrderUpdateActionOutput &
 export type AddStagedOrderDelivery = {
   address?: InputMaybe<AddressInput>;
   custom?: InputMaybe<CustomFieldsDraft>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   items?: InputMaybe<Array<DeliveryItemDraftType>>;
   parcels?: InputMaybe<Array<ParcelDataDraftType>>;
   shippingKey?: InputMaybe<Scalars['String']>;
@@ -402,6 +405,7 @@ export type AddStagedOrderDeliveryOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'AddStagedOrderDeliveryOutput';
   address?: Maybe<AddressDraft>;
   custom?: Maybe<CustomFieldsCommand>;
+  deliveryKey?: Maybe<Scalars['String']>;
   items: Array<DeliveryItem>;
   parcels: Array<ParcelData>;
   shippingKey?: Maybe<Scalars['String']>;
@@ -454,7 +458,8 @@ export type AddStagedOrderLineItemOutput = StagedOrderUpdateActionOutput & {
 
 export type AddStagedOrderParcelToDelivery = {
   custom?: InputMaybe<CustomFieldsDraft>;
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   items?: InputMaybe<Array<DeliveryItemDraftType>>;
   measurements?: InputMaybe<ParcelMeasurementsDraftType>;
   trackingData?: InputMaybe<TrackingDataDraftType>;
@@ -463,7 +468,8 @@ export type AddStagedOrderParcelToDelivery = {
 export type AddStagedOrderParcelToDeliveryOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'AddStagedOrderParcelToDeliveryOutput';
   custom?: Maybe<CustomFieldsCommand>;
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   items: Array<DeliveryItem>;
   measurements?: Maybe<ParcelMeasurements>;
   trackingData?: Maybe<TrackingData>;
@@ -962,7 +968,7 @@ export type AssetSourceInput = {
 export type Associate = {
   __typename?: 'Associate';
   /** BETA: This feature can be subject to change and should be used carefully in production. https://docs.commercetools.com/api/contract#public-beta */
-  associateRoleAssignments?: Maybe<Array<AssociateRoleAssignment>>;
+  associateRoleAssignments: Array<AssociateRoleAssignment>;
   customer?: Maybe<Customer>;
   customerRef?: Maybe<Reference>;
   /** @deprecated Replaced with associateRoleAssignments */
@@ -1008,7 +1014,7 @@ export type AssociateRoleAssignment = {
   /** BETA: This feature can be subject to change and should be used carefully in production. https://docs.commercetools.com/api/contract#public-beta */
   associateRoleRef?: Maybe<KeyReference>;
   /** BETA: This feature can be subject to change and should be used carefully in production. https://docs.commercetools.com/api/contract#public-beta */
-  inheritance?: Maybe<AssociateInheritanceMode>;
+  inheritance: AssociateInheritanceMode;
 };
 
 /** BETA: This feature can be subject to change and should be used carefully in production. https://docs.commercetools.com/api/contract#public-beta */
@@ -1351,7 +1357,7 @@ export type BusinessUnit = Versioned & {
   /** This field contains the BusinessUnits KeyReferences from the Company to the parent Division of this BusinessUnit in that order. */
   ancestors: Array<BusinessUnit>;
   /** BETA: This feature can be subject to change and should be used carefully in production. https://docs.commercetools.com/api/contract#public-beta */
-  associateMode?: Maybe<BusinessUnitAssociateMode>;
+  associateMode: BusinessUnitAssociateMode;
   associates: Array<Associate>;
   billingAddressIds: Array<Scalars['String']>;
   billingAddresses: Array<Address>;
@@ -2992,6 +2998,26 @@ export type CommercetoolsSubscriptionQueryResult = {
   total: Scalars['Long'];
 };
 
+export type ConfluentCloudDestination = Destination & {
+  __typename?: 'ConfluentCloudDestination';
+  acks: Scalars['String'];
+  apiKey: Scalars['String'];
+  apiSecret: Scalars['String'];
+  boostrapServers: Scalars['String'];
+  key?: Maybe<Scalars['String']>;
+  topic: Scalars['String'];
+  type: Scalars['String'];
+};
+
+export type ConfluentCloudDestinationInput = {
+  acks: Scalars['String'];
+  apiKey: Scalars['String'];
+  apiSecret: Scalars['String'];
+  boostrapServers: Scalars['String'];
+  key?: InputMaybe<Scalars['String']>;
+  topic: Scalars['String'];
+};
+
 export type CreateApiClient = {
   accessTokenValiditySeconds?: InputMaybe<Scalars['Int']>;
   deleteDaysAfterCreation?: InputMaybe<Scalars['Int']>;
@@ -3757,6 +3783,7 @@ export type Delivery = {
   custom?: Maybe<CustomFieldsType>;
   id: Scalars['String'];
   items: Array<DeliveryItem>;
+  key?: Maybe<Scalars['String']>;
   parcels: Array<Parcel>;
 };
 
@@ -3780,6 +3807,7 @@ export type DeliveryDraft = {
   address?: InputMaybe<AddressInput>;
   custom?: InputMaybe<CustomFieldsDraft>;
   items: Array<DeliveryItemDraftType>;
+  key?: InputMaybe<Scalars['String']>;
   parcels: Array<ParcelDraft>;
 };
 
@@ -3816,6 +3844,7 @@ export type Destination = {
 
 export type DestinationInput = {
   AzureServiceBus?: InputMaybe<AzureServiceBusDestinationInput>;
+  ConfluentCloud?: InputMaybe<ConfluentCloudDestinationInput>;
   EventBridge?: InputMaybe<EventBridgeDestinationInput>;
   EventGrid?: InputMaybe<EventGridDestinationInput>;
   GoogleCloudPubSub?: InputMaybe<GoogleCloudPubSubDestinationInput>;
@@ -9664,6 +9693,7 @@ export type QueryProductProjectionSearchArgs = {
   markMatchingVariants?: InputMaybe<Scalars['Boolean']>;
   offset?: InputMaybe<Scalars['Int']>;
   priceSelector?: InputMaybe<PriceSelectorInput>;
+  projectExpandedProducts?: InputMaybe<Scalars['Boolean']>;
   queryFilters?: InputMaybe<Array<SearchFilterInput>>;
   sorts?: InputMaybe<Array<Scalars['String']>>;
   staged?: InputMaybe<Scalars['Boolean']>;
@@ -9720,6 +9750,7 @@ export type QueryProductsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   localeProjection?: InputMaybe<Array<Scalars['Locale']>>;
   offset?: InputMaybe<Scalars['Int']>;
+  projectExpandedProducts?: InputMaybe<Scalars['Boolean']>;
   skus?: InputMaybe<Array<Scalars['String']>>;
   sort?: InputMaybe<Array<Scalars['String']>>;
   where?: InputMaybe<Scalars['String']>;
@@ -10424,7 +10455,8 @@ export type RemoveMyBusinessUnitShippingAddressId = {
 };
 
 export type RemoveOrderDelivery = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
 };
 
 export type RemoveOrderItemShippingAddress = {
@@ -10510,12 +10542,14 @@ export type RemoveStagedOrderCustomLineItemOutput = StagedOrderUpdateActionOutpu
 };
 
 export type RemoveStagedOrderDelivery = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
 };
 
 export type RemoveStagedOrderDeliveryOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'RemoveStagedOrderDeliveryOutput';
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -11391,6 +11425,7 @@ export type SetCartShippingMethod = {
 
 export type SetCartShippingMethodTaxAmount = {
   externalTaxAmount?: InputMaybe<ExternalTaxAmountDraft>;
+  shippingKey?: InputMaybe<Scalars['String']>;
 };
 
 export type SetCartShippingMethodTaxRate = {
@@ -11822,17 +11857,20 @@ export type SetOrderCustomerId = {
 
 export type SetOrderDeliveryAddress = {
   address?: InputMaybe<AddressInput>;
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
 };
 
 export type SetOrderDeliveryAddressCustomField = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   value?: InputMaybe<Scalars['String']>;
 };
 
 export type SetOrderDeliveryAddressCustomType = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   fields?: InputMaybe<Array<CustomFieldInput>>;
   type?: InputMaybe<ResourceIdentifierInput>;
   typeId?: InputMaybe<Scalars['String']>;
@@ -11840,13 +11878,15 @@ export type SetOrderDeliveryAddressCustomType = {
 };
 
 export type SetOrderDeliveryCustomField = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   value?: InputMaybe<Scalars['String']>;
 };
 
 export type SetOrderDeliveryCustomType = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   fields?: InputMaybe<Array<CustomFieldInput>>;
   type?: InputMaybe<ResourceIdentifierInput>;
   typeId?: InputMaybe<Scalars['String']>;
@@ -11854,7 +11894,8 @@ export type SetOrderDeliveryCustomType = {
 };
 
 export type SetOrderDeliveryItems = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   items: Array<DeliveryItemDraftType>;
 };
 
@@ -12690,25 +12731,29 @@ export type SetStagedOrderCustomerIdOutput = StagedOrderUpdateActionOutput & {
 
 export type SetStagedOrderDeliveryAddress = {
   address?: InputMaybe<AddressInput>;
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
 };
 
 export type SetStagedOrderDeliveryAddressCustomField = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   value?: InputMaybe<Scalars['String']>;
 };
 
 export type SetStagedOrderDeliveryAddressCustomFieldOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'SetStagedOrderDeliveryAddressCustomFieldOutput';
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   type: Scalars['String'];
   value?: Maybe<Scalars['Json']>;
 };
 
 export type SetStagedOrderDeliveryAddressCustomType = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   fields?: InputMaybe<Array<CustomFieldInput>>;
   type?: InputMaybe<ResourceIdentifierInput>;
   typeId?: InputMaybe<Scalars['String']>;
@@ -12718,33 +12763,38 @@ export type SetStagedOrderDeliveryAddressCustomType = {
 export type SetStagedOrderDeliveryAddressCustomTypeOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'SetStagedOrderDeliveryAddressCustomTypeOutput';
   custom: CustomFieldsCommand;
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
 export type SetStagedOrderDeliveryAddressOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'SetStagedOrderDeliveryAddressOutput';
   address?: Maybe<AddressDraft>;
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
 export type SetStagedOrderDeliveryCustomField = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   value?: InputMaybe<Scalars['String']>;
 };
 
 export type SetStagedOrderDeliveryCustomFieldOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'SetStagedOrderDeliveryCustomFieldOutput';
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   type: Scalars['String'];
   value?: Maybe<Scalars['Json']>;
 };
 
 export type SetStagedOrderDeliveryCustomType = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   fields?: InputMaybe<Array<CustomFieldInput>>;
   type?: InputMaybe<ResourceIdentifierInput>;
   typeId?: InputMaybe<Scalars['String']>;
@@ -12754,18 +12804,21 @@ export type SetStagedOrderDeliveryCustomType = {
 export type SetStagedOrderDeliveryCustomTypeOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'SetStagedOrderDeliveryCustomTypeOutput';
   custom: CustomFieldsCommand;
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
 export type SetStagedOrderDeliveryItems = {
-  deliveryId: Scalars['String'];
+  deliveryId?: InputMaybe<Scalars['String']>;
+  deliveryKey?: InputMaybe<Scalars['String']>;
   items: Array<DeliveryItemDraftType>;
 };
 
 export type SetStagedOrderDeliveryItemsOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'SetStagedOrderDeliveryItemsOutput';
-  deliveryId: Scalars['String'];
+  deliveryId?: Maybe<Scalars['String']>;
+  deliveryKey?: Maybe<Scalars['String']>;
   items: Array<DeliveryItem>;
   type: Scalars['String'];
 };
@@ -13194,11 +13247,13 @@ export type SetStagedOrderShippingMethodOutput = StagedOrderUpdateActionOutput &
 
 export type SetStagedOrderShippingMethodTaxAmount = {
   externalTaxAmount?: InputMaybe<ExternalTaxAmountDraft>;
+  shippingKey?: InputMaybe<Scalars['String']>;
 };
 
 export type SetStagedOrderShippingMethodTaxAmountOutput = StagedOrderUpdateActionOutput & {
   __typename?: 'SetStagedOrderShippingMethodTaxAmountOutput';
   externalTaxAmount?: Maybe<ExternalTaxAmountDraftOutput>;
+  shippingKey?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -15241,29 +15296,47 @@ export type SetKey = {
 };
 
 export type CreateCartMutationVariables = Exact<{
-  email: Scalars['String'];
+  email?: InputMaybe<Scalars['String']>;
   sku: Scalars['String'];
 }>;
 
 
 export type CreateCartMutation = { __typename?: 'Mutation', createCart?: { __typename?: 'Cart', id: string, version: any, customerEmail?: string | null, lineItems: Array<{ __typename?: 'LineItem', quantity: any }> } | null };
 
-export type UpdateCartMutationVariables = Exact<{
-  id: Scalars['String'];
-  sku: Scalars['String'];
+export type SignInMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
-export type UpdateCartMutation = { __typename?: 'Mutation', updateCart?: { __typename?: 'Cart', lineItems: Array<{ __typename?: 'LineItem', quantity: any }> } | null };
+export type SignInMutation = { __typename?: 'Mutation', customerSignIn: { __typename?: 'CustomerSignInResult', cart?: { __typename?: 'Cart', version: any, id: string, cartState: CartState, lineItems: Array<{ __typename?: 'LineItem', quantity: any, variant?: { __typename?: 'ProductVariant', price?: { __typename?: 'ProductPrice', country?: any | null, value: { __typename?: 'HighPrecisionMoney', currencyCode: any, centAmount: any, fractionDigits: number } | { __typename?: 'Money', currencyCode: any, centAmount: any, fractionDigits: number } } | null, images: Array<{ __typename?: 'Image', url: string }> } | null }> } | null, customer: { __typename?: 'Customer', email: string, firstName?: string | null, lastName?: string | null } } };
+
+export type SignInAnonymousCartIdMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+  anonymousCartId?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SignInAnonymousCartIdMutation = { __typename?: 'Mutation', customerSignIn: { __typename?: 'CustomerSignInResult', cart?: { __typename?: 'Cart', version: any, id: string, cartState: CartState, lineItems: Array<{ __typename?: 'LineItem', quantity: any, variant?: { __typename?: 'ProductVariant', price?: { __typename?: 'ProductPrice', country?: any | null, value: { __typename?: 'HighPrecisionMoney', currencyCode: any, centAmount: any, fractionDigits: number } | { __typename?: 'Money', currencyCode: any, centAmount: any, fractionDigits: number } } | null, images: Array<{ __typename?: 'Image', url: string }> } | null }> } | null, customer: { __typename?: 'Customer', email: string, firstName?: string | null, lastName?: string | null } } };
+
+export type UpdateCartMutationVariables = Exact<{
+  cartId: Scalars['String'];
+  sku: Scalars['String'];
+  version: Scalars['Long'];
+}>;
+
+
+export type UpdateCartMutation = { __typename?: 'Mutation', updateCart?: { __typename?: 'Cart', version: any, id: string, customerEmail?: string | null, lineItems: Array<{ __typename?: 'LineItem', quantity: any }> } | null };
 
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductQueryResult', total: any, results: Array<{ __typename?: 'Product', id: string, masterData: { __typename?: 'ProductCatalogData', current?: { __typename?: 'ProductData', name?: string | null, slug?: string | null, masterVariant: { __typename?: 'ProductVariant', price?: { __typename?: 'ProductPrice', country?: any | null, value: { __typename?: 'HighPrecisionMoney', currencyCode: any, centAmount: any, fractionDigits: number } | { __typename?: 'Money', currencyCode: any, centAmount: any, fractionDigits: number } } | null, images: Array<{ __typename?: 'Image', url: string }> } } | null } }> } };
+export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductQueryResult', total: any, results: Array<{ __typename?: 'Product', id: string, masterData: { __typename?: 'ProductCatalogData', current?: { __typename?: 'ProductData', name?: string | null, slug?: string | null, masterVariant: { __typename?: 'ProductVariant', sku?: string | null, price?: { __typename?: 'ProductPrice', country?: any | null, value: { __typename?: 'HighPrecisionMoney', currencyCode: any, centAmount: any, fractionDigits: number } | { __typename?: 'Money', currencyCode: any, centAmount: any, fractionDigits: number } } | null, images: Array<{ __typename?: 'Image', url: string }> } } | null } }> } };
 
 
 export const CreateCartDocument = gql`
-    mutation createCart($email: String!, $sku: String!) {
+    mutation createCart($email: String, $sku: String!) {
   createCart(
     draft: {currency: "USD", country: "US", customerEmail: $email, lineItems: {sku: $sku}}
   ) {
@@ -15303,9 +15376,135 @@ export function useCreateCartMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateCartMutationHookResult = ReturnType<typeof useCreateCartMutation>;
 export type CreateCartMutationResult = Apollo.MutationResult<CreateCartMutation>;
 export type CreateCartMutationOptions = Apollo.BaseMutationOptions<CreateCartMutation, CreateCartMutationVariables>;
+export const SignInDocument = gql`
+    mutation SignIn($email: String!, $password: String!) {
+  customerSignIn(
+    draft: {email: $email, password: $password, anonymousCartSignInMode: MergeWithExistingCustomerCart}
+  ) {
+    cart {
+      version
+      id
+      cartState
+      lineItems {
+        quantity
+        variant {
+          price(country: "US", currency: "USD") {
+            country
+            value {
+              currencyCode
+              centAmount
+              fractionDigits
+            }
+          }
+          images {
+            url
+          }
+        }
+      }
+    }
+    customer {
+      email
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMutationVariables>;
+
+/**
+ * __useSignInMutation__
+ *
+ * To run a mutation, you first call `useSignInMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInMutation, { data, loading, error }] = useSignInMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignInMutation, SignInMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignInMutation, SignInMutationVariables>(SignInDocument, options);
+      }
+export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
+export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
+export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
+export const SignInAnonymousCartIdDocument = gql`
+    mutation SignInAnonymousCartId($email: String!, $password: String!, $anonymousCartId: String) {
+  customerSignIn(
+    draft: {email: $email, password: $password, anonymousCartId: $anonymousCartId, anonymousCartSignInMode: MergeWithExistingCustomerCart}
+  ) {
+    cart {
+      version
+      id
+      cartState
+      lineItems {
+        quantity
+        variant {
+          price(country: "US", currency: "USD") {
+            country
+            value {
+              currencyCode
+              centAmount
+              fractionDigits
+            }
+          }
+          images {
+            url
+          }
+        }
+      }
+    }
+    customer {
+      email
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+export type SignInAnonymousCartIdMutationFn = Apollo.MutationFunction<SignInAnonymousCartIdMutation, SignInAnonymousCartIdMutationVariables>;
+
+/**
+ * __useSignInAnonymousCartIdMutation__
+ *
+ * To run a mutation, you first call `useSignInAnonymousCartIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInAnonymousCartIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInAnonymousCartIdMutation, { data, loading, error }] = useSignInAnonymousCartIdMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *      anonymousCartId: // value for 'anonymousCartId'
+ *   },
+ * });
+ */
+export function useSignInAnonymousCartIdMutation(baseOptions?: Apollo.MutationHookOptions<SignInAnonymousCartIdMutation, SignInAnonymousCartIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignInAnonymousCartIdMutation, SignInAnonymousCartIdMutationVariables>(SignInAnonymousCartIdDocument, options);
+      }
+export type SignInAnonymousCartIdMutationHookResult = ReturnType<typeof useSignInAnonymousCartIdMutation>;
+export type SignInAnonymousCartIdMutationResult = Apollo.MutationResult<SignInAnonymousCartIdMutation>;
+export type SignInAnonymousCartIdMutationOptions = Apollo.BaseMutationOptions<SignInAnonymousCartIdMutation, SignInAnonymousCartIdMutationVariables>;
 export const UpdateCartDocument = gql`
-    mutation updateCart($id: String!, $sku: String!) {
-  updateCart(version: 1, actions: {addLineItem: {sku: $sku}}, id: $id) {
+    mutation updateCart($cartId: String!, $sku: String!, $version: Long!) {
+  updateCart(version: $version, actions: {addLineItem: {sku: $sku}}, id: $cartId) {
+    version
+    id
+    customerEmail
     lineItems {
       quantity
     }
@@ -15327,8 +15526,9 @@ export type UpdateCartMutationFn = Apollo.MutationFunction<UpdateCartMutation, U
  * @example
  * const [updateCartMutation, { data, loading, error }] = useUpdateCartMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      cartId: // value for 'cartId'
  *      sku: // value for 'sku'
+ *      version: // value for 'version'
  *   },
  * });
  */
@@ -15350,6 +15550,7 @@ export const GetProductsDocument = gql`
           name(locale: "en")
           slug(locale: "en")
           masterVariant {
+            sku
             price(country: "US", currency: "USD") {
               country
               value {

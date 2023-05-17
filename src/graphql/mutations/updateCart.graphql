@@ -1,9 +1,12 @@
-mutation updateCart($id:String!, $sku:String!) {
+mutation updateCart($cartId: String!, $sku: String!, $version: Long!) {
   updateCart(
-    version: 1
+    version: $version
     actions: { addLineItem: { sku: $sku } }
-    id: $id
+    id: $cartId
   ) {
+    version
+    id
+    customerEmail
     lineItems {
       quantity
     }

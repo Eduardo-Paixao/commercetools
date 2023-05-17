@@ -1,0 +1,73 @@
+mutation SignIn($email: String!, $password: String!) {
+  customerSignIn(
+    draft: {
+      email: $email
+      password: $password
+      anonymousCartSignInMode: MergeWithExistingCustomerCart
+    }
+  ) {
+    cart {
+      version
+      id
+      cartState
+      lineItems {
+        quantity
+        variant {
+          price(country: "US", currency: "USD") {
+            country
+            value {
+              currencyCode
+              centAmount
+              fractionDigits
+            }
+          }
+          images {
+            url
+          }
+        }
+      }
+    }
+    customer {
+      email
+      firstName
+      lastName
+    }
+  }
+}
+mutation SignInAnonymousCartId($email: String!, $password: String!, $anonymousCartId: String) {
+  customerSignIn(
+    draft: {
+      email: $email
+      password: $password
+      anonymousCartId: $anonymousCartId
+      anonymousCartSignInMode: MergeWithExistingCustomerCart
+    }
+  ) {
+    cart {
+      version
+      id
+      cartState
+      lineItems {
+        quantity
+        variant {
+          price(country: "US", currency: "USD") {
+            country
+            value {
+              currencyCode
+              centAmount
+              fractionDigits
+            }
+          }
+          images {
+            url
+          }
+        }
+      }
+    }
+    customer {
+      email
+      firstName
+      lastName
+    }
+  }
+}

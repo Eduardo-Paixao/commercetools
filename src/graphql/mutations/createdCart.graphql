@@ -1,4 +1,4 @@
-mutation createCart($email:String!, $sku:String!) {
+mutation createCart($email: String, $sku: String!) {
   createCart(
     draft: {
       currency: "USD"

@@ -1,13 +1,11 @@
-import { token } from "./src/lib/apollo";
 import { CodegenConfig } from "@graphql-codegen/cli";
-
 
 const config: CodegenConfig = {
   schema: [
     {
       "https://api.us-central1.gcp.commercetools.com/teste-dev/graphql": {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: 'Bearer gg0nh0Ez8U36tl2qsv_6vLZhSXUTwOtf',
         },
       },
     },

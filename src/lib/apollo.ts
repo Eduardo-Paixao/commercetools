@@ -1,27 +1,36 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
-const authEndpoint = "https://auth.us-central1.gcp.commercetools.com/oauth/token";
+import {ApolloClient,ApolloLink,InMemoryCache,createHttpLink,from,} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import axios from "axios";
 
-export let token = "F143DLgxjpMWzoKefRdRzhfs4nYQ9R0f";
-
-export async function getToken() {
-  const response = await fetch(authEndpoint, {
-    method: "POST",
+const httpLink = createHttpLink({
+  uri: `${process.env.NEXT_PUBLIC_CTP_API_URL}/teste-dev/graphql`,
+});
+const authMiddleware = new ApolloLink((operation, forward) => {
+  operation.setContext(({ headers = {} }) => ({
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${btoa(`${process.env.NEXT_PUBLIC_CTP_CLIENT_ID}:${process.env.NEXT_PUBLIC_CTP_CLIENT_SECRET}`)}`,
+      ...headers,
+      authorization: localStorage.getItem("token"),
     },
-    body: new URLSearchParams({
-      grant_type: "client_credentials",
-      scope: "manage_project:teste-dev",
-    }),
-  });
-  const data = await response.json();
-  token = data.access_token;
-  return token;
-}
-getToken();
+  }));
+  return forward(operation);
+});
+const asyncAuthLink = setContext(async function getToken() {
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_CTP_AUTH_URL}/oauth/token?grant_type=client_credentials`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Basic ${btoa(
+          `${process.env.NEXT_PUBLIC_CTP_CLIENT_ID}:${process.env.NEXT_PUBLIC_CTP_CLIENT_SECRET}`
+        )}`,
+      },
+    }
+  );
+  localStorage.setItem("token", `Bearer ${data.access_token}`);
+});
+
 export const createApolloClient = new ApolloClient({
-  uri: "https://api.us-central1.gcp.commercetools.com/teste-dev/graphql",
   cache: new InMemoryCache(),
-  headers: { authorization: `Bearer ${token}` },
+  link: from([asyncAuthLink,authMiddleware, httpLink]),
 });

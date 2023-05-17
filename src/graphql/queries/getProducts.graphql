@@ -8,6 +8,7 @@ query getProducts {
           name(locale: "en")
           slug(locale: "en")
           masterVariant {
+            sku
             price(country: "US", currency: "USD") {
               country
               value {
