@@ -5,7 +5,7 @@ const config: CodegenConfig = {
     {
       "https://api.us-central1.gcp.commercetools.com/teste-dev/graphql": {
         headers: {
-          Authorization: 'Bearer gg0nh0Ez8U36tl2qsv_6vLZhSXUTwOtf',
+          Authorization: 'Bearer mOT2xgbVo9HBcPqwyANQypheLTVFXRBk',
         },
       },
     },

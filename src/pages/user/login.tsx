@@ -1,7 +1,5 @@
-import {
-  useSignInAnonymousCartIdMutation,
-  useSignInMutation,
-} from "@/graphql/generated";
+
+import { useSignInAnonymousCartIdMutation, useSignInMutation } from "@/graphql/generated";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
@@ -142,7 +140,7 @@ export default function LogIn() {
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{" "}
           <a
-            href="#"
+            href="registration"
             className="font-semibold leading-6 text-[#ee8726] hover:opacity-75 "
           >
             Start a 14 day free trial

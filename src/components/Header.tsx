@@ -26,7 +26,7 @@ export const Header = () => {
           <button className="rounded-md ml-4 bg-[#1cb092] hover:opacity-75 text-white py-2 px-4 rounded-r-md font-bold">
             Search
           </button>
-          <button className="rounded-md ml-4 bg-[#1cb092] hover:opacity-75 text-white py-2 px-4 font-bold" onClick={()=>router.push('/login')}>
+          <button className="rounded-md ml-4 bg-[#1cb092] hover:opacity-75 text-white py-2 px-4 font-bold" onClick={()=>router.push('user/login')}>
             Log In
           </button>
           <button className="rounded-md ml-4 bg-[#1cb092] hover:opacity-75 text-white py-2 px-4">

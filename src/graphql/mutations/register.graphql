@@ -1,0 +1,54 @@
+mutation register(
+  $email: String!
+  $password: String!
+  $firstName: String!
+  $lastName: String!
+  $dateOfBirth: Date!
+  $streetName: String!
+  $streetNumber: String!
+  $postalCode: String!
+  $city: String!
+  $state: String!
+  $region: String!
+  $mobile: String!
+) {
+  customerSignUp(
+    draft: {
+      email: $email
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      dateOfBirth: $dateOfBirth
+      addresses: {
+        streetName: $streetName
+        streetNumber: $streetNumber
+        postalCode: $postalCode
+        city: $city
+        country: "BR"
+        state: $state
+        region: $region
+        mobile: $mobile
+      }
+    }
+  ) {
+    customer {
+      email
+      firstName
+      lastName
+      dateOfBirth
+      createdAt
+      lastModifiedAt
+      isEmailVerified
+      addresses {
+        streetName
+        streetNumber
+        postalCode
+        city
+        country
+        state
+        region
+        mobile
+      }
+    }
+  }
+}

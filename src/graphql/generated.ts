@@ -13499,6 +13499,7 @@ export type ShippingMethodLocalizedNameArgs = {
 
 export type ShippingMethodDraft = {
   custom?: InputMaybe<CustomFieldsDraft>;
+  /** The usage of parameter 'description' is deprecated in favor of using 'localizedDescription' */
   description?: InputMaybe<Scalars['String']>;
   isDefault: Scalars['Boolean'];
   key?: InputMaybe<Scalars['String']>;
@@ -13548,6 +13549,7 @@ export type ShippingMethodUpdateAction = {
   removeZone?: InputMaybe<RemoveShippingMethodZone>;
   setCustomField?: InputMaybe<SetShippingMethodCustomField>;
   setCustomType?: InputMaybe<SetShippingMethodCustomType>;
+  /** This action is deprecated in favor of using 'setLocalizedDescription' */
   setDescription?: InputMaybe<SetShippingMethodDescription>;
   setKey?: InputMaybe<SetShippingMethodKey>;
   setLocalizedDescription?: InputMaybe<SetShippingMethodLocalizedDescription>;
@@ -15295,14 +15297,6 @@ export type SetKey = {
   key?: InputMaybe<Scalars['String']>;
 };
 
-export type CreateCartMutationVariables = Exact<{
-  email?: InputMaybe<Scalars['String']>;
-  sku: Scalars['String'];
-}>;
-
-
-export type CreateCartMutation = { __typename?: 'Mutation', createCart?: { __typename?: 'Cart', id: string, version: any, customerEmail?: string | null, lineItems: Array<{ __typename?: 'LineItem', quantity: any }> } | null };
-
 export type SignInMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -15320,6 +15314,32 @@ export type SignInAnonymousCartIdMutationVariables = Exact<{
 
 export type SignInAnonymousCartIdMutation = { __typename?: 'Mutation', customerSignIn: { __typename?: 'CustomerSignInResult', cart?: { __typename?: 'Cart', version: any, id: string, cartState: CartState, lineItems: Array<{ __typename?: 'LineItem', quantity: any, variant?: { __typename?: 'ProductVariant', price?: { __typename?: 'ProductPrice', country?: any | null, value: { __typename?: 'HighPrecisionMoney', currencyCode: any, centAmount: any, fractionDigits: number } | { __typename?: 'Money', currencyCode: any, centAmount: any, fractionDigits: number } } | null, images: Array<{ __typename?: 'Image', url: string }> } | null }> } | null, customer: { __typename?: 'Customer', email: string, firstName?: string | null, lastName?: string | null } } };
 
+export type CreateCartMutationVariables = Exact<{
+  email?: InputMaybe<Scalars['String']>;
+  sku: Scalars['String'];
+}>;
+
+
+export type CreateCartMutation = { __typename?: 'Mutation', createCart?: { __typename?: 'Cart', id: string, version: any, customerEmail?: string | null, lineItems: Array<{ __typename?: 'LineItem', quantity: any }> } | null };
+
+export type RegisterMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  dateOfBirth: Scalars['Date'];
+  streetName: Scalars['String'];
+  streetNumber: Scalars['String'];
+  postalCode: Scalars['String'];
+  city: Scalars['String'];
+  state: Scalars['String'];
+  region: Scalars['String'];
+  mobile: Scalars['String'];
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', customerSignUp: { __typename?: 'CustomerSignInResult', customer: { __typename?: 'Customer', email: string, firstName?: string | null, lastName?: string | null, dateOfBirth?: any | null, createdAt: any, lastModifiedAt: any, isEmailVerified: boolean, addresses: Array<{ __typename?: 'Address', streetName?: string | null, streetNumber?: string | null, postalCode?: string | null, city?: string | null, country: any, state?: string | null, region?: string | null, mobile?: string | null }> } } };
+
 export type UpdateCartMutationVariables = Exact<{
   cartId: Scalars['String'];
   sku: Scalars['String'];
@@ -15335,47 +15355,6 @@ export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductQueryResult', total: any, results: Array<{ __typename?: 'Product', id: string, masterData: { __typename?: 'ProductCatalogData', current?: { __typename?: 'ProductData', name?: string | null, slug?: string | null, masterVariant: { __typename?: 'ProductVariant', sku?: string | null, price?: { __typename?: 'ProductPrice', country?: any | null, value: { __typename?: 'HighPrecisionMoney', currencyCode: any, centAmount: any, fractionDigits: number } | { __typename?: 'Money', currencyCode: any, centAmount: any, fractionDigits: number } } | null, images: Array<{ __typename?: 'Image', url: string }> } } | null } }> } };
 
 
-export const CreateCartDocument = gql`
-    mutation createCart($email: String, $sku: String!) {
-  createCart(
-    draft: {currency: "USD", country: "US", customerEmail: $email, lineItems: {sku: $sku}}
-  ) {
-    id
-    version
-    customerEmail
-    lineItems {
-      quantity
-    }
-  }
-}
-    `;
-export type CreateCartMutationFn = Apollo.MutationFunction<CreateCartMutation, CreateCartMutationVariables>;
-
-/**
- * __useCreateCartMutation__
- *
- * To run a mutation, you first call `useCreateCartMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCartMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCartMutation, { data, loading, error }] = useCreateCartMutation({
- *   variables: {
- *      email: // value for 'email'
- *      sku: // value for 'sku'
- *   },
- * });
- */
-export function useCreateCartMutation(baseOptions?: Apollo.MutationHookOptions<CreateCartMutation, CreateCartMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateCartMutation, CreateCartMutationVariables>(CreateCartDocument, options);
-      }
-export type CreateCartMutationHookResult = ReturnType<typeof useCreateCartMutation>;
-export type CreateCartMutationResult = Apollo.MutationResult<CreateCartMutation>;
-export type CreateCartMutationOptions = Apollo.BaseMutationOptions<CreateCartMutation, CreateCartMutationVariables>;
 export const SignInDocument = gql`
     mutation SignIn($email: String!, $password: String!) {
   customerSignIn(
@@ -15499,6 +15478,111 @@ export function useSignInAnonymousCartIdMutation(baseOptions?: Apollo.MutationHo
 export type SignInAnonymousCartIdMutationHookResult = ReturnType<typeof useSignInAnonymousCartIdMutation>;
 export type SignInAnonymousCartIdMutationResult = Apollo.MutationResult<SignInAnonymousCartIdMutation>;
 export type SignInAnonymousCartIdMutationOptions = Apollo.BaseMutationOptions<SignInAnonymousCartIdMutation, SignInAnonymousCartIdMutationVariables>;
+export const CreateCartDocument = gql`
+    mutation createCart($email: String, $sku: String!) {
+  createCart(
+    draft: {currency: "USD", country: "US", customerEmail: $email, lineItems: {sku: $sku}}
+  ) {
+    id
+    version
+    customerEmail
+    lineItems {
+      quantity
+    }
+  }
+}
+    `;
+export type CreateCartMutationFn = Apollo.MutationFunction<CreateCartMutation, CreateCartMutationVariables>;
+
+/**
+ * __useCreateCartMutation__
+ *
+ * To run a mutation, you first call `useCreateCartMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCartMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCartMutation, { data, loading, error }] = useCreateCartMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      sku: // value for 'sku'
+ *   },
+ * });
+ */
+export function useCreateCartMutation(baseOptions?: Apollo.MutationHookOptions<CreateCartMutation, CreateCartMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCartMutation, CreateCartMutationVariables>(CreateCartDocument, options);
+      }
+export type CreateCartMutationHookResult = ReturnType<typeof useCreateCartMutation>;
+export type CreateCartMutationResult = Apollo.MutationResult<CreateCartMutation>;
+export type CreateCartMutationOptions = Apollo.BaseMutationOptions<CreateCartMutation, CreateCartMutationVariables>;
+export const RegisterDocument = gql`
+    mutation register($email: String!, $password: String!, $firstName: String!, $lastName: String!, $dateOfBirth: Date!, $streetName: String!, $streetNumber: String!, $postalCode: String!, $city: String!, $state: String!, $region: String!, $mobile: String!) {
+  customerSignUp(
+    draft: {email: $email, password: $password, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, addresses: {streetName: $streetName, streetNumber: $streetNumber, postalCode: $postalCode, city: $city, country: "BR", state: $state, region: $region, mobile: $mobile}}
+  ) {
+    customer {
+      email
+      firstName
+      lastName
+      dateOfBirth
+      createdAt
+      lastModifiedAt
+      isEmailVerified
+      addresses {
+        streetName
+        streetNumber
+        postalCode
+        city
+        country
+        state
+        region
+        mobile
+      }
+    }
+  }
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      dateOfBirth: // value for 'dateOfBirth'
+ *      streetName: // value for 'streetName'
+ *      streetNumber: // value for 'streetNumber'
+ *      postalCode: // value for 'postalCode'
+ *      city: // value for 'city'
+ *      state: // value for 'state'
+ *      region: // value for 'region'
+ *      mobile: // value for 'mobile'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateCartDocument = gql`
     mutation updateCart($cartId: String!, $sku: String!, $version: Long!) {
   updateCart(version: $version, actions: {addLineItem: {sku: $sku}}, id: $cartId) {
