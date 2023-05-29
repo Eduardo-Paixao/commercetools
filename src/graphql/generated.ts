@@ -15326,7 +15326,6 @@ export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
   firstName: Scalars['String'];
-  lastName: Scalars['String'];
   dateOfBirth: Scalars['Date'];
   streetName: Scalars['String'];
   streetNumber: Scalars['String'];
@@ -15338,7 +15337,7 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', customerSignUp: { __typename?: 'CustomerSignInResult', customer: { __typename?: 'Customer', email: string, firstName?: string | null, lastName?: string | null, dateOfBirth?: any | null, createdAt: any, lastModifiedAt: any, isEmailVerified: boolean, addresses: Array<{ __typename?: 'Address', streetName?: string | null, streetNumber?: string | null, postalCode?: string | null, city?: string | null, country: any, state?: string | null, region?: string | null, mobile?: string | null }> } } };
+export type RegisterMutation = { __typename?: 'Mutation', customerSignUp: { __typename?: 'CustomerSignInResult', customer: { __typename?: 'Customer', email: string, firstName?: string | null, dateOfBirth?: any | null, createdAt: any, lastModifiedAt: any, isEmailVerified: boolean, addresses: Array<{ __typename?: 'Address', streetName?: string | null, streetNumber?: string | null, postalCode?: string | null, city?: string | null, country: any, state?: string | null, region?: string | null, mobile?: string | null }> } } };
 
 export type UpdateCartMutationVariables = Exact<{
   cartId: Scalars['String'];
@@ -15520,14 +15519,13 @@ export type CreateCartMutationHookResult = ReturnType<typeof useCreateCartMutati
 export type CreateCartMutationResult = Apollo.MutationResult<CreateCartMutation>;
 export type CreateCartMutationOptions = Apollo.BaseMutationOptions<CreateCartMutation, CreateCartMutationVariables>;
 export const RegisterDocument = gql`
-    mutation register($email: String!, $password: String!, $firstName: String!, $lastName: String!, $dateOfBirth: Date!, $streetName: String!, $streetNumber: String!, $postalCode: String!, $city: String!, $state: String!, $region: String!, $mobile: String!) {
+    mutation register($email: String!, $password: String!, $firstName: String!, $dateOfBirth: Date!, $streetName: String!, $streetNumber: String!, $postalCode: String!, $city: String!, $state: String!, $region: String!, $mobile: String!) {
   customerSignUp(
-    draft: {email: $email, password: $password, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, addresses: {streetName: $streetName, streetNumber: $streetNumber, postalCode: $postalCode, city: $city, country: "BR", state: $state, region: $region, mobile: $mobile}}
+    draft: {email: $email, password: $password, firstName: $firstName, dateOfBirth: $dateOfBirth, addresses: {streetName: $streetName, streetNumber: $streetNumber, postalCode: $postalCode, city: $city, country: "BR", state: $state, region: $region, mobile: $mobile}}
   ) {
     customer {
       email
       firstName
-      lastName
       dateOfBirth
       createdAt
       lastModifiedAt
@@ -15564,7 +15562,6 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  *      email: // value for 'email'
  *      password: // value for 'password'
  *      firstName: // value for 'firstName'
- *      lastName: // value for 'lastName'
  *      dateOfBirth: // value for 'dateOfBirth'
  *      streetName: // value for 'streetName'
  *      streetNumber: // value for 'streetNumber'

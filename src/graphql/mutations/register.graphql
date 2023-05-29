@@ -2,7 +2,6 @@ mutation register(
   $email: String!
   $password: String!
   $firstName: String!
-  $lastName: String!
   $dateOfBirth: Date!
   $streetName: String!
   $streetNumber: String!
@@ -17,7 +16,6 @@ mutation register(
       email: $email
       password: $password
       firstName: $firstName
-      lastName: $lastName
       dateOfBirth: $dateOfBirth
       addresses: {
         streetName: $streetName
@@ -34,7 +32,6 @@ mutation register(
     customer {
       email
       firstName
-      lastName
       dateOfBirth
       createdAt
       lastModifiedAt

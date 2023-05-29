@@ -1,57 +1,93 @@
 import { InputForm } from "@/components/InputForm";
 import { useRegisterMutation } from "@/graphql/generated";
+import { Form, Formik, useFormik } from "formik";
+import * as yup from "yup";
 import { useRouter } from "next/router";
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
+import { errorMessage } from "@/components/Toasts";
+import { ObjectSchema } from "yup";
 
 interface InputFormProps {
   email?: string;
   password?: string;
-  firstName?: string;
-  lastName?: string;
-  dateOfBirth?: string;
+  name?: string;
+  dateOfBirth?: Date | string;
   streetName?: string;
   streetNumber?: string;
   postalCode?: string;
   city?: string;
-  country?: string;
   state?: string;
   region?: string;
   mobile?: string;
 }
 
 export default function Registration() {
-  const [inputForm, setInputForm] = useState<InputFormProps>();
-  const [register] = useRegisterMutation();
+  const [inputForm] = useState<InputFormProps>({
+    email: "",
+    password: "",
+    name: "",
+    dateOfBirth: "",
+    streetName: "",
+    streetNumber: "",
+    postalCode: "",
+    city: "",
+    state: "",
+    region: "",
+    mobile: "",
+  });
+  const [register, { error }] = useRegisterMutation();
   const router = useRouter();
 
-  const handlerSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const schema: ObjectSchema<InputFormProps> = yup.object().shape({
+    email: yup.string().required("E-mail obrigatório").email("E-mail invalido"),
+    password: yup
+      .string()
+      .required("Senha obrigatória")
+      .min(8, "No minimo 8 caracteres"),
+    name: yup.string().required("Nome obrigatório"),
+    dateOfBirth: yup.date().required("Data de nascimento obrigatória"),
+    // .test('menorIdade', "Menor de idade", (value) => {
+    //   const idade = new Date().getFullYear() - value.getFullYear()
+    //   idade > 18 ? false : true
+    // }),
+    streetName: yup.string().required("Rua obrigatório"),
+    streetNumber: yup.string().required("Número obrigatório"),
+    postalCode: yup.string().required("Cep obrigatório"),
+    city: yup.string().required("Cidade obrigatório"),
+    state: yup.string().required("Estado obrigatório"),
+    region: yup.string().required("Bairro obrigatório"),
+    mobile: yup.string().required("Celular obrigatório"),
+  });
+
+  const handlerSubmit = async (values: InputFormProps) => {
     await register({
       variables: {
-        email: inputForm?.email!,
-        password: inputForm?.password!,
-        firstName: inputForm?.firstName!,
-        lastName: inputForm?.lastName!,
-        dateOfBirth: inputForm?.dateOfBirth!,
-        streetName: inputForm?.streetName!,
-        streetNumber: inputForm?.streetNumber!,
-        postalCode: inputForm?.postalCode!,
-        city: inputForm?.city!,
-        state: inputForm?.state!,
-        region: inputForm?.region!,
-        mobile: inputForm?.mobile!,
+        email: values?.email!,
+        password: values?.password!,
+        firstName: values?.name!,
+        dateOfBirth: values?.dateOfBirth!,
+        streetName: values?.streetName!,
+        streetNumber: values?.streetNumber!,
+        postalCode: values?.postalCode!,
+        city: values?.city!,
+        state: values?.state!,
+        region: values?.region!,
+        mobile: values?.mobile!,
       },
     })
       .then((response) => {
-        console.log(response);
-        router.push('/')
+        console.log(response.errors);
+        // router.push('/')
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        errorMessage(error?.message!);
       });
-    console.log(inputForm);
   };
-
+  const formik = useFormik({
+    initialValues: inputForm,
+    onSubmit: handlerSubmit,
+    validationSchema: schema,
+  });
   return (
     <div className="flex flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-slate-100">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -59,125 +95,99 @@ export default function Registration() {
           Cadastre-se
         </h2>
       </div>
-
       <div className="mt-10 p-10 sm:mx-auto md:mx-auto md:min-w-[35rem] md:min-h-[25rem] sm:w-full sm:max-w-sm rounded-md bg-white shadow">
-        <form className="space-y-6" onSubmit={handlerSubmit}>
+        <form className="space-y-4" onSubmit={formik.handleSubmit}>
           <div className="md:grid grid-cols-2 gap-6 space-y-6 md:space-y-0">
             <InputForm
-              onChange={(e) =>
-                setInputForm({ ...inputForm, firstName: e.target.value })
-              }
-              label="Nome"
+              label="*Nome completo"
               type="text"
-              id="name"
+              {...formik.getFieldProps("name")}
+              error={formik.errors.name}
+              touched={formik.touched.name}
             />
             <InputForm
-              onChange={(e) =>
-                setInputForm({ ...inputForm, lastName: e.target.value })
-              }
-              label="Sobre nome"
-              type="text"
-              id="lastName"
-            />
-          </div>
-
-          <div className="md:grid grid-cols-2 gap-6 space-y-6 md:space-y-0">
-            <InputForm
-              onChange={(e) =>
-                setInputForm({
-                  ...inputForm,
-                  dateOfBirth: e.target.value,
-                })
-              }
-              label="Data de avniversário"
+              error={formik.errors.dateOfBirth}
+              touched={formik.touched.dateOfBirth}
+              {...formik.getFieldProps("dateOfBirth")}
+              label="*Data de nascimento"
               type="date"
-              id="date"
-            />
-
-            <InputForm
-              onChange={(e) =>
-                setInputForm({ ...inputForm, mobile: e.target.value })
-              }
-              label="Celular"
-              type="number"
-              id="cell"
             />
           </div>
           <div className="md:grid grid-cols-2 gap-6 space-y-6 md:space-y-0">
             <InputForm
-              onChange={(e) =>
-                setInputForm({ ...inputForm, postalCode: e.target.value })
-              }
-              label="CEP"
+              error={formik.errors.mobile}
+              touched={formik.touched.mobile}
+              {...formik.getFieldProps("mobile")}
+              label="*Celular"
               type="text"
-              id="postalcode"
+              mask="(11) 11111-1111"
             />
-
             <InputForm
-              onChange={(e) =>
-                setInputForm({ ...inputForm, state: e.target.value })
-              }
-              label="Estado"
+              error={formik.errors.postalCode}
+              touched={formik.touched.postalCode}
+              {...formik.getFieldProps("postalCode")}
+              label="*CEP"
               type="text"
-              id="state"
+              mask="11-111111"
+            />
+          </div>
+          <div className="md:grid grid-cols-2 gap-6 space-y-6 md:space-y-0">
+            <InputForm
+              error={formik.errors.state}
+              touched={formik.touched.state}
+              {...formik.getFieldProps("state")}
+              label="*Estado"
+              type="text"
+            />
+            <InputForm
+              error={formik.errors.city}
+              touched={formik.touched.city}
+              {...formik.getFieldProps("city")}
+              label="*Cidade"
+              type="text"
             />
           </div>
           <InputForm
-            onChange={(e) =>
-              setInputForm({ ...inputForm, city: e.target.value })
-            }
-            label="Cidade"
+            error={formik.errors.region}
+            touched={formik.touched.region}
+            {...formik.getFieldProps("region")}
+            label="*Bairro"
             type="text"
-            id="city"
           />
           <InputForm
-            onChange={(e) =>
-              setInputForm({ ...inputForm, region: e.target.value })
-            }
-            label="Bairro"
+            error={formik.errors.streetName}
+            touched={formik.touched.streetName}
+            {...formik.getFieldProps("streetName")}
+            label="*Rua"
             type="text"
-            id="neighborhood"
           />
           <InputForm
-            onChange={(e) =>
-              setInputForm({ ...inputForm, streetName: e.target.value })
-            }
-            label="Rua"
+            error={formik.errors.streetNumber}
+            touched={formik.touched.streetNumber}
+            {...formik.getFieldProps("streetNumber")}
+            label="*Número"
             type="text"
-            id="street"
           />
           <InputForm
-            onChange={(e) =>
-              setInputForm({ ...inputForm, streetNumber: e.target.value })
-            }
-            label="Número"
-            type="text"
-            id="number"
-          />
-
-          <InputForm
-            onChange={(e) =>
-              setInputForm({ ...inputForm, email: e.target.value })
-            }
-            label="E-mail"
+            error={formik.errors.email}
+            touched={formik.touched.email}
+            {...formik.getFieldProps("email")}
+            label="*E-mail"
             type="email"
-            id="email"
             autoComplete="email"
           />
           <InputForm
-            onChange={(e) =>
-              setInputForm({ ...inputForm, password: e.target.value })
-            }
-            label="Senha"
+            error={formik.errors.password}
+            touched={formik.touched.password}
+            {...formik.getFieldProps("password")}
+            label="*Senha"
             type="password"
-            id="password"
             autoComplete="current-password"
           />
-
           <div className="text-sm justify-between flex">
             <InputForm
               type="checkbox"
-              id="checkbox"
+              name="checkbox"
               className="cursor-pointer text-[#ee8726] w-5 h-5 ring-1 ring-inset ring-gray-300 rounded border-none shadow focus:ring-1 focus:ring-[#ee8726] "
             />
             <a className="ml-3 font-semibold text-[#ee8726] text-left">
